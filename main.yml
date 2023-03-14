@@ -1,4 +1,4 @@
-name: <REPO NAME GOES HERE> Test Runner by JobSimulator.Dev
+name: Express TS Backend Test Runner by JobSimulator.Dev
 on:
   pull_request_target:
     branches: ["main"]
@@ -40,9 +40,13 @@ jobs:
       - run: rm -rf tests # remove any user provided test dir
       - uses: actions/checkout@v3 # checkout tests repo
         with:
-          repository: <TEST REPO GOES HERE>
+          repository: developer-job-simulation/express-ts-backend-tests
           path: tests
-      - name: npm install
-        run: cd tests && npm i
+      - name: npm install project dependencies
+        run: cd src && npm ci
+      - name: npm install test dependencies
+        run: cd tests && npm ci
+      - name: npm start
+        run: cd src && npm start > /dev/null 2>&1 &
       - name: Run Tests
         run: node tests/test.js
